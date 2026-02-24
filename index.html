@@ -1,59 +1,105 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>PCCARE</title>
+<title>PCCARE | Futuristic</title>
+
 <style>
 body{
   margin:0;
   background:black;
   color:white;
-  font-family:Arial;
-  text-align:center;
+  font-family:Arial, sans-serif;
   overflow:hidden;
+  cursor:none;
+  text-align:center;
 }
+
 canvas{
   position:fixed;
   top:0;
   left:0;
   z-index:-1;
 }
+
 h1{
   margin-top:200px;
-  font-size:50px;
+  font-size:60px;
+  color:#00f7ff;
+  text-shadow:0 0 20px #00f7ff;
+  animation:pulse 2s infinite alternate;
+}
+
+@keyframes pulse{
+  from{ text-shadow:0 0 10px #00f7ff; }
+  to{ text-shadow:0 0 40px #00f7ff; }
+}
+
+p{
+  font-size:22px;
+  color:gray;
+}
+
+.cursor{
+  width:15px;
+  height:15px;
+  background:#00f7ff;
+  border-radius:50%;
+  position:fixed;
+  pointer-events:none;
+  transform:translate(-50%,-50%);
+}
+
+.trail{
+  width:8px;
+  height:8px;
+  background:#00f7ff;
+  border-radius:50%;
+  position:fixed;
+  pointer-events:none;
+  opacity:0.5;
 }
 </style>
 </head>
+
 <body>
 
 <canvas id="bg"></canvas>
 
-<h1 id="text"></h1>
+<h1>PCCARE 🚀</h1>
+<p>Creative Developer | Future Software Engineer</p>
+
+<div class="cursor"></div>
 
 <script>
-const message = "Welcome PCCARE 🚀";
-let i = 0;
+// Cursor
+const cursor = document.querySelector(".cursor");
 
-function typing(){
-  if(i < message.length){
-    document.getElementById("text").innerHTML += message[i];
-    i++;
-    setTimeout(typing,100);
-  }
-}
-typing();
+document.addEventListener("mousemove", e=>{
+  cursor.style.left = e.clientX+"px";
+  cursor.style.top = e.clientY+"px";
+
+  let trail = document.createElement("div");
+  trail.className="trail";
+  trail.style.left = e.clientX+"px";
+  trail.style.top = e.clientY+"px";
+  document.body.appendChild(trail);
+
+  setTimeout(()=>{ trail.remove(); },300);
+});
 
 // Stars
-const canvas = document.getElementById("bg");
-const ctx = canvas.getContext("2d");
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+const canvas=document.getElementById("bg");
+const ctx=canvas.getContext("2d");
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
 
 let stars=[];
-for(let i=0;i<150;i++){
+for(let i=0;i<250;i++){
   stars.push({
     x:Math.random()*canvas.width,
     y:Math.random()*canvas.height,
-    r:Math.random()*2
+    r:Math.random()*3,
+    d:Math.random()*1
   });
 }
 
@@ -68,7 +114,10 @@ function draw(){
 }
 
 function animate(){
-  stars.forEach(s=>s.y+=0.5);
+  stars.forEach(s=>{
+    s.y+=s.d;
+    if(s.y>canvas.height) s.y=0;
+  });
   draw();
   requestAnimationFrame(animate);
 }
