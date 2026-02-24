@@ -1,143 +1,78 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>PCCARE | AI Developer</title>
-
-  <!-- Google Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
-
-  <style>
-    body {
-      margin: 0;
-      background: radial-gradient(circle at top, #0f0f2d, #000);
-      color: white;
-      font-family: 'Orbitron', sans-serif;
-      overflow-x: hidden;
-      cursor: none;
-    }
-
-    canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: -1;
-    }
-
-    section {
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      text-align: center;
-    }
-
-    h1 {
-      font-size: 60px;
-    }
-
-    .typing {
-      font-size: 25px;
-      margin-top: 20px;
-      color: #00f7ff;
-    }
-
-    .card {
-      backdrop-filter: blur(15px);
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
-      padding: 30px;
-      border-radius: 20px;
-      width: 300px;
-      transition: 0.3s;
-    }
-
-    .card:hover {
-      transform: scale(1.1);
-      box-shadow: 0 0 30px #00f7ff;
-    }
-
-    .cursor {
-      width: 15px;
-      height: 15px;
-      background: #00f7ff;
-      border-radius: 50%;
-      position: fixed;
-      pointer-events: none;
-      transform: translate(-50%, -50%);
-    }
-  </style>
+<title>PCCARE</title>
+<style>
+body{
+  margin:0;
+  background:black;
+  color:white;
+  font-family:Arial;
+  text-align:center;
+  overflow:hidden;
+}
+canvas{
+  position:fixed;
+  top:0;
+  left:0;
+  z-index:-1;
+}
+h1{
+  margin-top:200px;
+  font-size:50px;
+}
+</style>
 </head>
-
 <body>
 
-<canvas id="stars"></canvas>
-<div class="cursor"></div>
+<canvas id="bg"></canvas>
 
-<section>
-  <h1>PCCARE 🤖</h1>
-  <div class="typing" id="typing"></div>
-</section>
-
-<section>
-  <div class="card">
-    <h2>About Me</h2>
-    <p>A passionate developer building futuristic animated experiences.</p>
-  </div>
-</section>
+<h1 id="text"></h1>
 
 <script>
-  // Typing Effect
-  const text = "AI Developer | Future Engineer | Dream Big 🚀";
-  let i = 0;
-  function typeEffect() {
-    if (i < text.length) {
-      document.getElementById("typing").innerHTML += text.charAt(i);
-      i++;
-      setTimeout(typeEffect, 70);
-    }
-  }
-  typeEffect();
+const message = "Welcome PCCARE 🚀";
+let i = 0;
 
-  // Custom Cursor
-  const cursor = document.querySelector(".cursor");
-  document.addEventListener("mousemove", (e) => {
-    cursor.style.left = e.clientX + "px";
-    cursor.style.top = e.clientY + "px";
+function typing(){
+  if(i < message.length){
+    document.getElementById("text").innerHTML += message[i];
+    i++;
+    setTimeout(typing,100);
+  }
+}
+typing();
+
+// Stars
+const canvas = document.getElementById("bg");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let stars=[];
+for(let i=0;i<150;i++){
+  stars.push({
+    x:Math.random()*canvas.width,
+    y:Math.random()*canvas.height,
+    r:Math.random()*2
   });
+}
 
-  // Star Background
-  const canvas = document.getElementById("stars");
-  const ctx = canvas.getContext("2d");
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+function draw(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle="white";
+  stars.forEach(s=>{
+    ctx.beginPath();
+    ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+    ctx.fill();
+  });
+}
 
-  let stars = [];
-  for(let i=0;i<200;i++){
-    stars.push({
-      x: Math.random()*canvas.width,
-      y: Math.random()*canvas.height,
-      r: Math.random()*2
-    });
-  }
-
-  function drawStars(){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    ctx.fillStyle="white";
-    stars.forEach(s=>{
-      ctx.beginPath();
-      ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
-      ctx.fill();
-    });
-  }
-
-  function animate(){
-    stars.forEach(s=>s.y += 0.3);
-    drawStars();
-    requestAnimationFrame(animate);
-  }
-
-  animate();
+function animate(){
+  stars.forEach(s=>s.y+=0.5);
+  draw();
+  requestAnimationFrame(animate);
+}
+animate();
 </script>
 
 </body>
