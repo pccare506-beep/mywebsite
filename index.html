@@ -1,132 +1,108 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Ultimate Animated Website</title>
+  <title>PCCARE | Developer</title>
 
   <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
 
-  <!-- Tailwind -->
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- GSAP -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-
-  <!-- Three.js -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <!-- AOS Animation -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
   <style>
     body {
       margin: 0;
-      overflow-x: hidden;
-      font-family: 'Orbitron', sans-serif;
       background: black;
+      color: white;
+      font-family: 'Orbitron', sans-serif;
+      overflow-x: hidden;
       cursor: none;
     }
 
-    canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: -1;
+    h1 {
+      font-size: 60px;
+      text-align: center;
+      margin-top: 200px;
     }
 
+    p {
+      text-align: center;
+      font-size: 20px;
+      color: gray;
+    }
+
+    section {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    /* Custom Cursor */
     .cursor {
       width: 20px;
       height: 20px;
-      border: 2px solid cyan;
+      border: 2px solid white;
       border-radius: 50%;
       position: fixed;
       pointer-events: none;
       transform: translate(-50%, -50%);
-      box-shadow: 0 0 20px cyan;
+      transition: 0.1s;
     }
 
-    .neon {
-      text-shadow: 0 0 10px cyan, 0 0 20px cyan, 0 0 40px cyan;
+    .glow {
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, #00f7ff55, transparent);
+      filter: blur(50px);
+      animation: float 6s infinite alternate ease-in-out;
+    }
+
+    @keyframes float {
+      from { transform: translateY(-50px); }
+      to { transform: translateY(50px); }
     }
   </style>
 </head>
 
-<body class="text-white">
+<body>
 
-<div class="cursor" id="cursor"></div>
+<div class="cursor"></div>
+<div class="glow"></div>
 
-<section class="h-screen flex flex-col justify-center items-center text-center px-6">
-  <h1 id="title" class="text-6xl md:text-7xl font-bold neon mb-6">
-    FUTURE VISION 🚀
-  </h1>
-  <p id="subtitle" class="text-xl opacity-0 max-w-2xl">
-    Ultimate animated experience powered by next-gen web tech.
-  </p>
+<section>
+  <h1 data-aos="zoom-in">PCCARE 🚀</h1>
+  <p data-aos="fade-up">Creative Developer | Future Software Engineer</p>
 </section>
 
-<section class="h-screen flex justify-center items-center">
-  <div id="card" class="bg-white text-black p-10 rounded-3xl shadow-2xl opacity-0">
-    <h2 class="text-3xl font-bold mb-4">Next Level Design ✨</h2>
-    <p>3D background. Neon glow. Smooth scroll. Custom cursor.</p>
-  </div>
+<section>
+  <h1 data-aos="fade-right">I Build Cool Stuff 💻</h1>
 </section>
+
+<!-- GSAP -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+<!-- AOS -->
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
 <script>
-  gsap.registerPlugin(ScrollTrigger);
-
-  gsap.from("#title", {
-    y: -200,
-    opacity: 0,
-    duration: 1.5
-  });
-
-  gsap.to("#subtitle", {
-    opacity: 1,
-    delay: 1,
-    duration: 1.5
-  });
-
-  gsap.to("#card", {
-    scrollTrigger: {
-      trigger: "#card",
-      start: "top 80%",
-    },
-    opacity: 1,
-    y: -50,
-    duration: 1.5
-  });
+  AOS.init();
 
   // Custom Cursor
-  const cursor = document.getElementById("cursor");
-  document.addEventListener("mousemove", e => {
+  const cursor = document.querySelector(".cursor");
+  document.addEventListener("mousemove", (e) => {
     cursor.style.left = e.clientX + "px";
     cursor.style.top = e.clientY + "px";
   });
 
-  // Three.js Background
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-  const renderer = new THREE.WebGLRenderer({ alpha: true });
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  document.body.appendChild(renderer.domElement);
-
-  const geometry = new THREE.TorusKnotGeometry(1, 0.3, 100, 16);
-  const material = new THREE.MeshBasicMaterial({ color: 0x00ffff, wireframe: true });
-  const torus = new THREE.Mesh(geometry, material);
-  scene.add(torus);
-
-  camera.position.z = 5;
-
-  function animate() {
-    requestAnimationFrame(animate);
-    torus.rotation.x += 0.01;
-    torus.rotation.y += 0.01;
-    renderer.render(scene, camera);
-  }
-  animate();
-
-  window.addEventListener("resize", () => {
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    camera.aspect = window.innerWidth/window.innerHeight;
-    camera.updateProjectionMatrix();
+  // GSAP Intro Animation
+  gsap.from("h1", {
+    y: -100,
+    opacity: 0,
+    duration: 1.5,
+    ease: "power4.out"
   });
 </script>
 
