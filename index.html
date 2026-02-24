@@ -1,6 +1,128 @@
 <!DOCTYPE html>
 <html>
-<body style="background:black; color:white; text-align:center; margin-top:200px;">
-<h1>NEW VERSION WORKING 🚀</h1>
+<head>
+<title>PCCARE | Futuristic</title>
+
+<style>
+body{
+  margin:0;
+  background:black;
+  color:white;
+  font-family:Arial, sans-serif;
+  overflow:hidden;
+  cursor:none;
+  text-align:center;
+}
+
+canvas{
+  position:fixed;
+  top:0;
+  left:0;
+  z-index:-1;
+}
+
+h1{
+  margin-top:200px;
+  font-size:60px;
+  color:#00f7ff;
+  text-shadow:0 0 20px #00f7ff;
+  animation:pulse 2s infinite alternate;
+}
+
+@keyframes pulse{
+  from{ text-shadow:0 0 10px #00f7ff; }
+  to{ text-shadow:0 0 40px #00f7ff; }
+}
+
+p{
+  font-size:22px;
+  color:gray;
+}
+
+.cursor{
+  width:15px;
+  height:15px;
+  background:#00f7ff;
+  border-radius:50%;
+  position:fixed;
+  pointer-events:none;
+  transform:translate(-50%,-50%);
+}
+
+.trail{
+  width:8px;
+  height:8px;
+  background:#00f7ff;
+  border-radius:50%;
+  position:fixed;
+  pointer-events:none;
+  opacity:0.5;
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="bg"></canvas>
+
+<h1>PCCARE 🚀</h1>
+<p>Creative Developer | Future Software Engineer</p>
+
+<div class="cursor"></div>
+
+<script>
+// Cursor
+const cursor = document.querySelector(".cursor");
+
+document.addEventListener("mousemove", e=>{
+  cursor.style.left = e.clientX+"px";
+  cursor.style.top = e.clientY+"px";
+
+  let trail = document.createElement("div");
+  trail.className="trail";
+  trail.style.left = e.clientX+"px";
+  trail.style.top = e.clientY+"px";
+  document.body.appendChild(trail);
+
+  setTimeout(()=>{ trail.remove(); },300);
+});
+
+// Stars
+const canvas=document.getElementById("bg");
+const ctx=canvas.getContext("2d");
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+let stars=[];
+for(let i=0;i<250;i++){
+  stars.push({
+    x:Math.random()*canvas.width,
+    y:Math.random()*canvas.height,
+    r:Math.random()*3,
+    d:Math.random()*1
+  });
+}
+
+function draw(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle="white";
+  stars.forEach(s=>{
+    ctx.beginPath();
+    ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+    ctx.fill();
+  });
+}
+
+function animate(){
+  stars.forEach(s=>{
+    s.y+=s.d;
+    if(s.y>canvas.height) s.y=0;
+  });
+  draw();
+  requestAnimationFrame(animate);
+}
+animate();
+</script>
+
 </body>
 </html>
